@@ -9,7 +9,7 @@ import { MailListModule } from './modules/mail-list/mail-list.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/girls-stem-db',),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/girls-stem-db'),
     StudentModule,
     PreTestModule,
     PostTestModule,
