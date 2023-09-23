@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
+@Schema({ versionKey: false, collection: 'PostTest' })
 export class PostTest extends Document {
   @Prop({ required: true })
   studentId: string;
