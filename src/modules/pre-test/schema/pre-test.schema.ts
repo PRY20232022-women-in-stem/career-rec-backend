@@ -4,7 +4,7 @@ import { Document } from "mongoose";
 @Schema({ versionKey: false, collection: 'PreTest' })
 export class PreTest extends Document {
   @Prop({ required: true })
-  studentId: number;
+  studentId: string;
 
   @Prop({ required: true })
   freeTimeActivities: boolean;
