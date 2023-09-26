@@ -6,6 +6,7 @@ import { StudentModule } from './modules/student/student.module';
 import { PreTestModule } from './modules/pre-test/pre-test.module';
 import { PostTestModule } from './modules/post-test/post-test.module';
 import { MailListModule } from './modules/mail-list/mail-list.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MailListModule } from './modules/mail-list/mail-list.module';
     PreTestModule,
     PostTestModule,
     MailListModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

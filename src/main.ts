@@ -12,6 +12,7 @@ async function bootstrap() {
     .setTitle('Girls in STEM API')
     .setDescription('RESTful API created for thesis project')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);

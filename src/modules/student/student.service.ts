@@ -5,15 +5,19 @@ import { Student } from './schema/student.schema';
 import { Student as StudentInterface } from './interfaces/student.interface';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentPasswordDto } from './dto/update-student-password.dto';
-import { PasswordUpdateFailedException } from '../exceptions/password-update-failed.exception.ts';
+import { PasswordUpdateFailedException } from '../../exceptions/password-update-failed.exception.ts';
+import { StudentAlreadyExists } from '../../exceptions/student-already-exists.exception';
 import * as bcrypt from 'bcrypt';
-
 
 @Injectable()
 export class StudentService {
     constructor(@InjectModel('Student') private readonly studentModel: Model<Student>) { }
 
     async createStudent(createStudentDto: CreateStudentDto): Promise<StudentInterface> {
+        const student = await this.studentModel.findOne({ email: createStudentDto.email });
+        if (student) {
+            throw new StudentAlreadyExists(`Student already exists`);
+        }
         const { password, ...restOfData } = createStudentDto;
         const saltRounds = 10;
 
@@ -49,7 +53,10 @@ export class StudentService {
     }
 
     async updateStudentPassword(updatePasswordData: UpdateStudentPasswordDto): Promise<StudentInterface | null> {
-        const student = await this.findStudentByEmail(updatePasswordData.email);
+        const student = await this.studentModel.findOne({ email: updatePasswordData.email });
+        if (!student) {
+            throw new NotFoundException(`Student with email ${updatePasswordData.email} not found`);
+        }
         const updatedStudent = await this.studentModel.findByIdAndUpdate(student._id, { password: updatePasswordData.password }, { new: true });
         if (!updatedStudent) {
             throw new PasswordUpdateFailedException('Failed updating student password');

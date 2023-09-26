@@ -1,16 +1,21 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { Student as StudentInterface } from './interfaces/student.interface';
 import { UpdateStudentPasswordDto } from './dto/update-student-password.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StudentDto } from './dto/student.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { SkipAuth } from '../../decorators/skip-auth.decorator';
 
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
 @ApiTags('Students')
 @Controller('students')
 export class StudentController {
     constructor(private readonly studentService: StudentService) { }
 
+    @SkipAuth()
     @ApiOperation({ summary: 'Create new Student' })
     @ApiBody({ type: CreateStudentDto })
     @ApiResponse({ status: 201, description: 'Student created succesfully' })
