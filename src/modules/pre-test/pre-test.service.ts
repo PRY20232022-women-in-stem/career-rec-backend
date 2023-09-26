@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PreTest } from './schema/pre-test.schema';
+import { PreTest } from './schemas/pre-test.schema';
 import { PreTest as PreTestInterface } from './interfaces/pre-test.interface';
 import { CreatePreTestDto } from './dto/create-pre-test.dto';
 

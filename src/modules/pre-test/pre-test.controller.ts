@@ -30,7 +30,7 @@ export class PreTestController {
     @ApiOperation({ summary: 'Get Pre-test by student Id' })
     @ApiResponse({ status: 200, description: 'Student pre-test found', type: CreatePreTestDto })
     @ApiResponse({ status: 404, description: 'Student pre-test does not exists' })
-    @Get(':studentId')
+    @Get('student/:studentId')
     async findPreTestByStudentId(@Param('studentId') studentId: string): Promise<PreTestInterface | null> {
         return this.preTestService.findPreTestByStudentId(studentId);
     }
