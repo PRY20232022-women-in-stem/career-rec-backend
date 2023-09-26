@@ -5,7 +5,7 @@ import { Student } from './schema/student.schema';
 import { Student as StudentInterface } from './interfaces/student.interface';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentPasswordDto } from './dto/update-student-password.dto';
-import { PasswordUpdateFailedException } from '../exceptions/password-update-failed.exception.ts';
+import { PasswordUpdateFailedException } from '../../exceptions/password-update-failed.exception.ts';
 import * as bcrypt from 'bcrypt';
 
 
