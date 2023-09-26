@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PreTestService } from './pre-test.service';
 import { PreTestController } from './pre-test.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PreTestSchema } from './pre-test.schema';
+import { PreTestSchema } from './schema/pre-test.schema';
 
 @Module({
   imports: [

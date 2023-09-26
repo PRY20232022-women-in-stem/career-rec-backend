@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { Student as StudentInterface } from './interfaces/student.interface';
@@ -50,13 +50,21 @@ export class StudentController {
         return this.studentService.updateStudent(studentId, updateData);
     }
 
-    @ApiOperation({ summary: 'Update Student\'s Password' })
+    @ApiOperation({ summary: 'Update Student Password' })
     @ApiBody({ type: UpdateStudentPasswordDto })
     @ApiResponse({ status: 200, description: 'Password updated successfully', type: StudentDto })
     @ApiResponse({ status: 404, description: 'Student not found' })
-    @Put('password')
-    async updateStudentPassword(@Body() updatePasswordData: UpdateStudentPasswordDto): Promise<StudentInterface> {
-        return this.studentService.updateStudentPassword(updatePasswordData);
+    @Put('password/:email')
+    async updateStudentPassword(@Param('email') email: string, @Body() updatePasswordData: UpdateStudentPasswordDto): Promise<StudentInterface> {
+        return this.studentService.updateStudentPassword(email, updatePasswordData);
+    }
+
+    @ApiOperation({ summary: 'Update student pre-test completition status' })
+    @ApiResponse({ status: 200, description: 'Student pre-test completition status updated successfully', type: StudentDto })
+    @ApiResponse({ status: 400, description: 'Student pre-test completition status failed' })
+    @Patch(':studentId/pre-test')
+    async updateStudentPreTest(@Param('studentId') studentId: string): Promise<StudentInterface> {
+        return this.studentService.updateStudentPreTest(studentId);
     }
 
     @ApiOperation({ summary: 'Delete Student by Id' })

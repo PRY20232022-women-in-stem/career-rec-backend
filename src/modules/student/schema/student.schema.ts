@@ -15,13 +15,13 @@ export class Student extends Document {
   @Prop()
   lastName: string;
 
-  @Prop()
+  @Prop({ default: '' })
   recCareer: string;
 
-  @Prop()
+  @Prop({ default: false })
   preTestCompl: boolean;
 
-  @Prop()
+  @Prop({ default: false })
   postTestCompl: boolean;
 }
 

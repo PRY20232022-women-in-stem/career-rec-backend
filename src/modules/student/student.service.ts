@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Student } from './schema/student.schema';
@@ -52,14 +52,27 @@ export class StudentService {
         return updatedStudent;
     }
 
-    async updateStudentPassword(updatePasswordData: UpdateStudentPasswordDto): Promise<StudentInterface | null> {
-        const student = await this.studentModel.findOne({ email: updatePasswordData.email });
+    async updateStudentPassword(email: string, updatePasswordData: UpdateStudentPasswordDto): Promise<StudentInterface | null> {
+        const student = await this.studentModel.findOne({ email });
         if (!student) {
-            throw new NotFoundException(`Student with email ${updatePasswordData.email} not found`);
+            throw new NotFoundException(`Student with email ${email} not found`);
         }
         const updatedStudent = await this.studentModel.findByIdAndUpdate(student._id, { password: updatePasswordData.password }, { new: true });
         if (!updatedStudent) {
             throw new PasswordUpdateFailedException('Failed updating student password');
+        }
+        return updatedStudent;
+    }
+
+    async updateStudentPreTest(studentId: string): Promise<StudentInterface> {
+        const student = await this.studentModel.findById(studentId);
+        if (!student) {
+            throw new NotFoundException(`Student with Id ${studentId} not found`);
+        }
+
+        const updatedStudent = await this.studentModel.findByIdAndUpdate(student._id, { preTestCompl: true }, { new: true });
+        if (!updatedStudent) {
+            throw new BadRequestException('Failed updating pre-test completition status');
         }
         return updatedStudent;
     }
