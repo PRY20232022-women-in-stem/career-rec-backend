@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Student } from './schema/student.schema';
+import { Student } from './schemas/student.schema';
 import { Student as StudentInterface } from './interfaces/student.interface';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentPasswordDto } from './dto/update-student-password.dto';

@@ -2,8 +2,7 @@ import { Module } from '@nestjs/common';
 import { PostTestController } from './post-test.controller';
 import { PostTestService } from './post-test.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PostTestSchema } from './post-test.schema';
-
+import { PostTestSchema } from './schemas/post-test.schema';
 
 @Module({
   imports: [
