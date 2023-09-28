@@ -2,123 +2,123 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 
 export class CreateVocationalTestDto {
-    @ApiProperty({ description: 'Math Logic Ability' })
+    @ApiProperty()
     @IsNumber()
     readonly mathLogicAbility: number;
 
-    @ApiProperty({ description: 'Math Difficulty' })
+    @ApiProperty()
     @IsNumber()
     readonly mathDifficulty: number;
 
-    @ApiProperty({ description: 'Math Interest' })
+    @ApiProperty()
     @IsNumber()
     readonly mathInterest: number;
 
-    @ApiProperty({ description: 'Math Challenges' })
+    @ApiProperty()
     @IsNumber()
     readonly mathChallenges: number;
 
-    @ApiProperty({ description: 'Math Exam Commitment' })
+    @ApiProperty()
     @IsNumber()
     readonly mathExamCommitment: number;
 
-    @ApiProperty({ description: 'Math Performance' })
+    @ApiProperty()
     @IsNumber()
     readonly mathPerformance: number;
 
-    @ApiProperty({ description: 'Math Participation' })
+    @ApiProperty()
     @IsNumber()
     readonly mathParticipation: number;
 
-    @ApiProperty({ description: 'Math Real-world Application' })
+    @ApiProperty()
     @IsNumber()
     readonly mathRealWorldApplication: number;
 
-    @ApiProperty({ description: 'Math Career Future' })
+    @ApiProperty()
     @IsNumber()
     readonly mathCareerFuture: number;
 
-    @ApiProperty({ description: 'Math Career Importance' })
+    @ApiProperty()
     @IsNumber()
     readonly mathCareerImportance: number;
 
-    @ApiProperty({ description: 'Science Interest' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceInterest: number;
 
-    @ApiProperty({ description: 'Science Career Possibility' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceCareerPossibility: number;
 
-    @ApiProperty({ description: 'Science Participation' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceParticipation: number;
 
-    @ApiProperty({ description: 'Science Dislike' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceDislike: number;
 
-    @ApiProperty({ description: 'Science Career Benefits' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceCareerBenefits: number;
 
-    @ApiProperty({ description: 'Science Academic Performance' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceAcademicPerformance: number;
 
-    @ApiProperty({ description: 'Science Difficulty' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceDifficulty: number;
 
-    @ApiProperty({ description: 'Science Real-world Application' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceRealWorldApplication: number;
 
-    @ApiProperty({ description: 'Science Career Importance' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceCareerImportance: number;
 
-    @ApiProperty({ description: 'Science Activities Participation' })
+    @ApiProperty()
     @IsNumber()
     readonly scienceActivitiesParticipation: number;
 
-    @ApiProperty({ description: 'Tech Building Repair Ability' })
+    @ApiProperty()
     @IsNumber()
     readonly techBuildingRepairAbility: number;
 
-    @ApiProperty({ description: 'Tech Studies Choice' })
+    @ApiProperty()
     @IsNumber()
     readonly techStudiesChoice: number;
 
-    @ApiProperty({ description: 'Tech Devices Skills' })
+    @ApiProperty()
     @IsNumber()
     readonly techDevicesSkills: number;
 
-    @ApiProperty({ description: 'Tech Success Confidence' })
+    @ApiProperty()
     @IsNumber()
     readonly techSuccessConfidence: number;
 
-    @ApiProperty({ description: 'Tech Inventions Link' })
+    @ApiProperty()
     @IsNumber()
     readonly techInventionsLink: number;
 
-    @ApiProperty({ description: 'Tech Projects Applicability' })
+    @ApiProperty()
     @IsNumber()
     readonly techProjectsApplicability: number;
 
-    @ApiProperty({ description: 'Tech Curiosity' })
+    @ApiProperty()
     @IsNumber()
     readonly techCuriosity: number;
 
-    @ApiProperty({ description: 'Tech Career Relevance' })
+    @ApiProperty()
     @IsNumber()
     readonly techCareerRelevance: number;
 
-    @ApiProperty({ description: 'Tech Courses Interest' })
+    @ApiProperty()
     @IsNumber()
     readonly techCoursesInterest: number;
 
-    @ApiProperty({ description: 'Tech Problem Solving Skills' })
+    @ApiProperty()
     @IsNumber()
     readonly techProblemSolvingSkills: number;
 }
