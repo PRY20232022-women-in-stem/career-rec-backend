@@ -8,7 +8,7 @@ export class VocationalTestService {
 
     async analyzeVocationalTest(createVocationalTestDto: CreateVocationalTestDto): Promise<any> { // Verificar que recibe para poner la resupuesta del promise
         try {
-            const response = await axios.post('URL_DEL_BACKEND_FLASK', createVocationalTestDto); // CAMBIAR POR LA RUTA DEL BACKEND CON VARIABLE DE ENTORNO
+            const response = await axios.post(`${process.env.FLASK_BACKEND_URL}/predict`, createVocationalTestDto); // CAMBIAR POR LA RUTA DEL BACKEND CON VARIABLE DE ENTORNO
             const result = response.data;
             return result;
         } catch (error) {
