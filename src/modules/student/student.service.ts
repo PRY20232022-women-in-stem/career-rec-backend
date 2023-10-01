@@ -77,6 +77,19 @@ export class StudentService {
         return updatedStudent;
     }
 
+    async updateStudentPostTest(studentId: string): Promise<StudentInterface> {
+        const student = await this.studentModel.findById(studentId);
+        if (!student) {
+            throw new NotFoundException(`Student with Id ${studentId} not found`);
+        }
+
+        const updatedStudent = await this.studentModel.findByIdAndUpdate(student._id, { postTestCompl: true }, { new: true });
+        if (!updatedStudent) {
+            throw new BadRequestException('Failed updating post-test completition status');
+        }
+        return updatedStudent;
+    }
+
     async resetPasswordRequest(email: string): Promise<void> {
         // Logica para el reinicio de contrasenia con JWT 
     }
