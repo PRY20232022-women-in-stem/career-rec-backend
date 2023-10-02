@@ -4,7 +4,6 @@ import { AuthService } from './auth.service';
 import { StudentModule } from '../student/student.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
-
 @Module({
   imports: [
     StudentModule,
