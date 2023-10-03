@@ -11,8 +11,8 @@ export class CreatePostTestDto {
     readonly projectParticipation: string;
 
     @ApiProperty()
-    @IsNumber()
-    readonly projectTimeSpent: number;
+    @IsString()
+    readonly projectTimeSpent: string;
 
     @ApiProperty()
     @IsNumber()

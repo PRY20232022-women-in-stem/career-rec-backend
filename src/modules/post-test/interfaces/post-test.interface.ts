@@ -1,7 +1,7 @@
 export interface PostTest {
     studentId: string;
     projectParticipation: string;
-    projectTimeSpent: number;
+    projectTimeSpent: string;
     interestStemFields: number;
     futureInterestStem: number;
     learnNewInfo: number;

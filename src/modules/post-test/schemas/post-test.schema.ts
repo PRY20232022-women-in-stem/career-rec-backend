@@ -10,7 +10,7 @@ export class PostTest extends Document {
   projectParticipation: string;
 
   @Prop({ required: true })
-  projectTimeSpent: number;
+  projectTimeSpent: string;
 
   @Prop({ required: true })
   interestStemFields: number;
