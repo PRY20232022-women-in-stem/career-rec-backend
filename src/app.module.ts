@@ -20,11 +20,11 @@ require('dotenv').config();
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: process.env.DB_HOST,
       port: 3306,
-      username: 'root',
-      password: '1234',
-      database: 'girls_in_stem_db',
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
       entities: [Student, VocationalTest, PreTest, PostTest, MailList],
       synchronize: true,
       namingStrategy: new SnakeNamingStrategy()
