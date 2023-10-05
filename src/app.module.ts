@@ -1,18 +1,34 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { AuthModule } from './modules/auth/auth.module';
 import { StudentModule } from './modules/student/student.module';
+import { VocationalTestModule } from './modules/vocational-test/vocational-test.module';
 import { PreTestModule } from './modules/pre-test/pre-test.module';
 import { PostTestModule } from './modules/post-test/post-test.module';
 import { MailListModule } from './modules/mail-list/mail-list.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { VocationalTestModule } from './modules/vocational-test/vocational-test.module';
+import { Student } from './modules/student/entities/student.entity';
+import { VocationalTest } from './modules/vocational-test/entities/vocational-test.entity';
+import { PreTest } from './modules/pre-test/entities/pre-test.entity';
+import { PostTest } from './modules/post-test/entities/post-test.entity';
+import { MailList } from './modules/mail-list/entities/mail-list.entity';
 require('dotenv').config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB}`),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '1234',
+      database: 'girls_in_stem_db',
+      entities: [Student, VocationalTest, PreTest, PostTest, MailList],
+      synchronize: true,
+      namingStrategy: new SnakeNamingStrategy()
+    }),
     AuthModule,
     StudentModule,
     VocationalTestModule,

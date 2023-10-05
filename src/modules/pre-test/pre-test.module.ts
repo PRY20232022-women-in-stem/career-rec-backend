@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
-import { PreTestService } from './pre-test.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PreTestController } from './pre-test.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { PreTestSchema } from './schemas/pre-test.schema';
+import { PreTestService } from './pre-test.service';
+import { PreTest } from './entities/pre-test.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: 'PreTest', schema: PreTestSchema }
-    ])
+    TypeOrmModule.forFeature([PreTest])
   ],
   providers: [PreTestService],
   controllers: [PreTestController]

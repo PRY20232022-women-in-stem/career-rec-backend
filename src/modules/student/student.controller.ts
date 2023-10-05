@@ -28,7 +28,7 @@ export class StudentController {
     @ApiResponse({ status: 200, description: 'Student found', type: StudentDto })
     @ApiResponse({ status: 404, description: 'Student not found' })
     @Get(':studentId')
-    async getStudentById(@Param('studentId') studentId: string): Promise<StudentInterface> {
+    async getStudentById(@Param('studentId') studentId: number): Promise<StudentInterface> {
         return this.studentService.findStudentById(studentId);
     }
 
@@ -40,21 +40,11 @@ export class StudentController {
         return this.studentService.findStudentByEmail(email);
     }
 
-    // CAMBIAR TODO EL METODO (NO SE USARA)
-    @ApiOperation({ summary: 'Update Student by Id' })
-    @ApiBody({ type: CreateStudentDto }) // ESTO ESTA MAl
-    @ApiResponse({ status: 200, description: 'Student updated successfully', type: StudentDto })
-    @ApiResponse({ status: 404, description: 'Student not found' })
-    @Put(':studentId')
-    async updateStudent(@Param('studentId') studentId: string, @Body() updateData: CreateStudentDto): Promise<StudentInterface> {
-        return this.studentService.updateStudent(studentId, updateData);
-    }
-
     @ApiOperation({ summary: 'Update Student Password' })
     @ApiBody({ type: UpdateStudentPasswordDto })
     @ApiResponse({ status: 200, description: 'Password updated successfully', type: StudentDto })
     @ApiResponse({ status: 404, description: 'Student not found' })
-    @Put('password/:email')
+    @Patch('password/:email')
     async updateStudentPassword(@Param('email') email: string, @Body() updatePasswordData: UpdateStudentPasswordDto): Promise<StudentInterface> {
         return this.studentService.updateStudentPassword(email, updatePasswordData);
     }
@@ -63,7 +53,7 @@ export class StudentController {
     @ApiResponse({ status: 200, description: 'Student pre-test completition status updated successfully', type: StudentDto })
     @ApiResponse({ status: 400, description: 'Student pre-test completition status failed' })
     @Patch(':studentId/pre-test')
-    async updateStudentPreTest(@Param('studentId') studentId: string): Promise<StudentInterface> {
+    async updateStudentPreTest(@Param('studentId') studentId: number): Promise<StudentInterface> {
         return this.studentService.updateStudentPreTest(studentId);
     }
 
@@ -71,15 +61,16 @@ export class StudentController {
     @ApiResponse({ status: 200, description: 'Student post-test completition status updated successfully', type: StudentDto })
     @ApiResponse({ status: 400, description: 'Student post-test completition status failed' })
     @Patch(':studentId/post-test')
-    async updateStudentPostTest(@Param('studentId') studentId: string): Promise<StudentInterface> {
+    async updateStudentPostTest(@Param('studentId') studentId: number): Promise<StudentInterface> {
         return this.studentService.updateStudentPostTest(studentId);
     }
 
+    // CONSIDERAR SU ELIMINACION, NO SE USA EN EL PROYECTO POR AHORA
     @ApiOperation({ summary: 'Delete Student by Id' })
     @ApiResponse({ status: 200, description: 'Student deleted successfully' })
     @ApiResponse({ status: 404, description: 'Student not found' })
     @Delete(':studentId')
-    async deleteStudent(@Param('studentId') studentId: string): Promise<StudentInterface> {
+    async deleteStudent(@Param('studentId') studentId: number): Promise<StudentInterface> {
         return this.studentService.deleteStudent(studentId);
     }
 }

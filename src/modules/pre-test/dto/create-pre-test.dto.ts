@@ -3,8 +3,8 @@ import { IsBoolean, IsNumber, IsString } from "class-validator";
 
 export class CreatePreTestDto {
     @ApiProperty()
-    @IsString()
-    readonly studentId: string;
+    @IsNumber()
+    readonly studentId: number;
 
     @ApiProperty()
     @IsBoolean()

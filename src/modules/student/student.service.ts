@@ -1,20 +1,19 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Student } from './schemas/student.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Student } from './entities/student.entity';
 import { Student as StudentInterface } from './interfaces/student.interface';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentPasswordDto } from './dto/update-student-password.dto';
-import { PasswordUpdateFailedException } from '../../exceptions/password-update-failed.exception.ts';
 import { StudentAlreadyExists } from '../../exceptions/student-already-exists.exception';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class StudentService {
-    constructor(@InjectModel('Student') private readonly studentModel: Model<Student>) { }
+    constructor(@InjectRepository(Student) private studentRepository: Repository<Student>) { }
 
     async createStudent(createStudentDto: CreateStudentDto): Promise<StudentInterface> {
-        const student = await this.studentModel.findOne({ email: createStudentDto.email });
+        const student = await this.studentRepository.findOneBy({ email: createStudentDto.email });
         if (student) {
             throw new StudentAlreadyExists(`Student already exists`);
         }
@@ -24,69 +23,61 @@ export class StudentService {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const studentDataWithHashedPassword = { ...restOfData, password: hashedPassword };
 
-        const createStudent = new this.studentModel(studentDataWithHashedPassword);
-        return await createStudent.save();
+        const createStudent = await this.studentRepository.save(studentDataWithHashedPassword);
+        return createStudent;
     }
 
-    async findStudentById(studentId: string): Promise<StudentInterface | null> {
-        const student = await this.studentModel.findById(studentId);
+    async findStudentById(id: number): Promise<StudentInterface | null> {
+        const student = await this.studentRepository.findOneBy({ id });
         if (!student) {
-            throw new NotFoundException(`Student with Id ${studentId} not found`);
+            throw new NotFoundException(`Student with Id ${id} not found`);
         }
         return student;
     }
 
     async findStudentByEmail(email: string): Promise<StudentInterface | null> {
-        const student = await this.studentModel.findOne({ email });
+        const student = await this.studentRepository.findOneBy({ email });
         if (!student) {
             throw new NotFoundException(`Student with email ${email} not found`);
         }
         return student;
     }
 
-    async updateStudent(studentId: string, updateData: CreateStudentDto): Promise<StudentInterface | null> {
-        const updatedStudent = await this.studentModel.findByIdAndUpdate(studentId, updateData, { new: true });
-        if (!updatedStudent) {
-            throw new NotFoundException(`Student with Id ${studentId} not found`);
-        }
-        return updatedStudent;
-    }
-
     async updateStudentPassword(email: string, updatePasswordData: UpdateStudentPasswordDto): Promise<StudentInterface | null> {
-        const student = await this.studentModel.findOne({ email });
+        const student = await this.studentRepository.findOneBy({ email });
         if (!student) {
             throw new NotFoundException(`Student with email ${email} not found`);
         }
-        const updatedStudent = await this.studentModel.findByIdAndUpdate(student._id, { password: updatePasswordData.password }, { new: true });
-        if (!updatedStudent) {
-            throw new PasswordUpdateFailedException('Failed updating student password');
+
+        if (updatePasswordData.password) {
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(updatePasswordData.password, saltRounds);
+            student.password = hashedPassword;
         }
+
+        const updatedStudent = await this.studentRepository.save(student);
         return updatedStudent;
     }
 
-    async updateStudentPreTest(studentId: string): Promise<StudentInterface> {
-        const student = await this.studentModel.findById(studentId);
+    async updateStudentPreTest(id: number): Promise<StudentInterface> {
+        const student = await this.studentRepository.findOneBy({ id });
         if (!student) {
-            throw new NotFoundException(`Student with Id ${studentId} not found`);
+            throw new NotFoundException(`Student with Id ${id} not found`);
         }
+        student.preTestCompl = true;
 
-        const updatedStudent = await this.studentModel.findByIdAndUpdate(student._id, { preTestCompl: true }, { new: true });
-        if (!updatedStudent) {
-            throw new BadRequestException('Failed updating pre-test completition status');
-        }
+        const updatedStudent = await this.studentRepository.save(student);
         return updatedStudent;
     }
 
-    async updateStudentPostTest(studentId: string): Promise<StudentInterface> {
-        const student = await this.studentModel.findById(studentId);
+    async updateStudentPostTest(id: number): Promise<StudentInterface> {
+        const student = await this.studentRepository.findOneBy({ id });
         if (!student) {
-            throw new NotFoundException(`Student with Id ${studentId} not found`);
+            throw new NotFoundException(`Student with Id ${id} not found`);
         }
+        student.postTestCompl = true;
 
-        const updatedStudent = await this.studentModel.findByIdAndUpdate(student._id, { postTestCompl: true }, { new: true });
-        if (!updatedStudent) {
-            throw new BadRequestException('Failed updating post-test completition status');
-        }
+        const updatedStudent = await this.studentRepository.save(student);
         return updatedStudent;
     }
 
@@ -94,11 +85,14 @@ export class StudentService {
         // Logica para el reinicio de contrasenia con JWT 
     }
 
-    async deleteStudent(studentId: string): Promise<StudentInterface | null> {
-        const deletedStudent = await this.studentModel.findByIdAndRemove(studentId);
-        if (!deletedStudent) {
-            throw new NotFoundException(`Student with Id ${studentId} not found`);
+    // CONSIDERAR SU ELIMINACION, NO SE USA EN EL PROYECTO POR AHORA
+    async deleteStudent(id: number): Promise<StudentInterface | null> {
+        const student = await this.studentRepository.findOneBy({ id });
+        if (!student) {
+            throw new NotFoundException(`Student with Id ${id} not found`);
         }
+
+        const deletedStudent = await this.studentRepository.remove(student);
         return deletedStudent;
     }
 }

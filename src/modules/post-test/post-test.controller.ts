@@ -31,7 +31,7 @@ export class PostTestController {
     @ApiResponse({ status: 200, description: 'Student post-test found', type: CreatePostTestDto })
     @ApiResponse({ status: 404, description: 'Student post-test does not exists' })
     @Get('student/:studentId')
-    async findPostTestByStudentId(@Param('studentId') studentId: string): Promise<PostTestInterface | null> {
+    async findPostTestByStudentId(@Param('studentId') studentId: number): Promise<PostTestInterface | null> {
         return this.postTestService.findPostTestByStudentId(studentId);
     }
 }

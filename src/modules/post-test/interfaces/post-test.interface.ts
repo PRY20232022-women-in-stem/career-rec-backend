@@ -1,5 +1,5 @@
 export interface PostTest {
-    studentId: string;
+    id: number;
     projectParticipation: string;
     projectTimeSpent: string;
     interestStemFields: number;

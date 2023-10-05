@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostTestController } from './post-test.controller';
 import { PostTestService } from './post-test.service';
-import { MongooseModule } from '@nestjs/mongoose';
-import { PostTestSchema } from './schemas/post-test.schema';
+import { PostTest } from './entities/post-test.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: 'PostTest', schema: PostTestSchema }
-    ])
+    TypeOrmModule.forFeature([PostTest])
   ],
   controllers: [PostTestController],
   providers: [PostTestService]

@@ -1,5 +1,5 @@
 export interface PreTest {
-    studentId: string;
+    id: number;
     freeTimeActivities: boolean;
     subjectInterestMath: number;
     subjectInterestBioGeo: number;
