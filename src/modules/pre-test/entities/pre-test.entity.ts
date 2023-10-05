@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { Student } from '../../student/entities/student.entity';
 
 @Entity('pre_test')
@@ -37,5 +37,6 @@ export class PreTest {
     lastGradePhyChe: string;
 
     @OneToOne(() => Student, (student) => student.preTest)
+    @JoinColumn()
     student: Student;
 }
