@@ -10,6 +10,6 @@ import { Student } from './entities/student.entity';
   ],
   controllers: [StudentController],
   providers: [StudentService],
-  exports: [StudentService],
+  exports: [StudentService, TypeOrmModule],
 })
 export class StudentModule { }

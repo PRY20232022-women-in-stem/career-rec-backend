@@ -27,10 +27,10 @@ export class StudentService {
         return createStudent;
     }
 
-    async findStudentById(id: number): Promise<StudentInterface | null> {
-        const student = await this.studentRepository.findOneBy({ id });
+    async findStudentById(studentId: number): Promise<StudentInterface | null> {
+        const student = await this.studentRepository.findOneBy({ id: studentId });
         if (!student) {
-            throw new NotFoundException(`Student with Id ${id} not found`);
+            throw new NotFoundException(`Student with Id ${studentId} not found`);
         }
         return student;
     }
@@ -59,10 +59,10 @@ export class StudentService {
         return updatedStudent;
     }
 
-    async updateStudentPreTest(id: number): Promise<StudentInterface> {
-        const student = await this.studentRepository.findOneBy({ id });
+    async updateStudentPreTest(studentId: number): Promise<StudentInterface> {
+        const student = await this.studentRepository.findOneBy({ id: studentId });
         if (!student) {
-            throw new NotFoundException(`Student with Id ${id} not found`);
+            throw new NotFoundException(`Student with Id ${studentId} not found`);
         }
         student.preTestCompl = true;
 
@@ -70,10 +70,10 @@ export class StudentService {
         return updatedStudent;
     }
 
-    async updateStudentPostTest(id: number): Promise<StudentInterface> {
-        const student = await this.studentRepository.findOneBy({ id });
+    async updateStudentPostTest(studentId: number): Promise<StudentInterface> {
+        const student = await this.studentRepository.findOneBy({ id: studentId });
         if (!student) {
-            throw new NotFoundException(`Student with Id ${id} not found`);
+            throw new NotFoundException(`Student with Id ${studentId} not found`);
         }
         student.postTestCompl = true;
 
@@ -86,10 +86,10 @@ export class StudentService {
     }
 
     // CONSIDERAR SU ELIMINACION, NO SE USA EN EL PROYECTO POR AHORA
-    async deleteStudent(id: number): Promise<StudentInterface | null> {
-        const student = await this.studentRepository.findOneBy({ id });
+    async deleteStudent(studentId: number): Promise<StudentInterface | null> {
+        const student = await this.studentRepository.findOneBy({ id: studentId });
         if (!student) {
-            throw new NotFoundException(`Student with Id ${id} not found`);
+            throw new NotFoundException(`Student with Id ${studentId} not found`);
         }
 
         const deletedStudent = await this.studentRepository.remove(student);

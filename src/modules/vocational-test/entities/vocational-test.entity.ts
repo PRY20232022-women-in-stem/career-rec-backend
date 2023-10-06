@@ -1,5 +1,5 @@
-import { Student } from '../../student/entities/student.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Student } from '../../student/entities/student.entity';
 
 @Entity('vocational_test')
 export class VocationalTest {

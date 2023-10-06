@@ -1,4 +1,5 @@
 export interface VocationalTest {
+    id: number;
     mathLogicAbility: number;
     mathDifficulty: number;
     mathInterest: number;
