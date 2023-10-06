@@ -26,7 +26,7 @@ require('dotenv').config();
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [Student, VocationalTest, PreTest, PostTest, MailList],
-      synchronize: false,
+      synchronize: true,
       namingStrategy: new SnakeNamingStrategy()
     }),
     AuthModule,
