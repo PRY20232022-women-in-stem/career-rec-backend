@@ -4,21 +4,35 @@ import { Repository } from 'typeorm';
 import { PostTest } from './entities/post-test.entity';
 import { PostTest as PostTestInterface } from './interfaces/post-test.interface';
 import { CreatePostTestDto } from './dto/create-post-test.dto';
+import { Student } from '../student/entities/student.entity';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class PostTestService {
-    constructor(@InjectRepository(PostTest) private postTestRepository: Repository<PostTest>) { }
+    constructor(
+        @InjectRepository(PostTest) private postTestRepository: Repository<PostTest>,
+        @InjectRepository(Student) private studentRepository: Repository<Student>
+    ) { }
 
-    async createPostTest(createPostTestDto: CreatePostTestDto): Promise<PostTestInterface> {
+    async createPostTest(studentId: number, createPostTestDto: CreatePostTestDto): Promise<PostTestInterface> {
         // QUITAR SI ES QUE SE PUEDE ENVIAR VARIAS VECES
         const postTest = await this.postTestRepository.findOne({
-            where: { student: { id: createPostTestDto.studentId } },
+            where: { student: { id: studentId } },
             relations: ["student"]
         });
         if (postTest) {
             throw new BadRequestException(`Post-test already submitted by user`);
         }
         // QUITAR SI ES QUE SE PUEDE ENVIAR VARIAS VECES
+
+        const student = await this.studentRepository.findOneBy({ id: studentId });
+        if (!student) {
+            throw new NotFoundException(`Student with ID ${studentId} not found`);
+        }
+
+        const newPostTest = plainToClass(PostTest, createPostTestDto);
+        newPostTest.student = student;
+
         const createPostTest = await this.postTestRepository.save(createPostTestDto);
         return createPostTest;
     }

@@ -15,9 +15,9 @@ export class PostTestController {
     @ApiOperation({ summary: 'Create new post-test' })
     @ApiBody({ type: CreatePostTestDto })
     @ApiResponse({ status: 201, description: 'Post-test created succesfully' })
-    @Post()
-    async createPostTest(@Body() createPostTestDto: CreatePostTestDto): Promise<PostTestInterface> {
-        return this.postTestService.createPostTest(createPostTestDto);
+    @Post('student/:studentId')
+    async createPostTest(@Param('studentId') studentId: number, @Body() createPostTestDto: CreatePostTestDto): Promise<PostTestInterface> {
+        return this.postTestService.createPostTest(studentId, createPostTestDto);
     }
 
     @ApiOperation({ summary: 'Get all submitted post-tests' })

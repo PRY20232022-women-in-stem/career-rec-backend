@@ -15,9 +15,9 @@ export class PreTestController {
     @ApiOperation({ summary: 'Create new pre-test' })
     @ApiBody({ type: CreatePreTestDto })
     @ApiResponse({ status: 201, description: 'Pre-test created succesfully' })
-    @Post()
-    async createPreTest(@Body() createPreTestDto: CreatePreTestDto): Promise<PreTestInterface> {
-        return this.preTestService.createPreTest(createPreTestDto);
+    @Post('student/:studentId')
+    async createPreTest(@Param('studentId') studentId: number, @Body() createPreTestDto: CreatePreTestDto): Promise<PreTestInterface> {
+        return this.preTestService.createPreTest(studentId, createPreTestDto);
     }
 
     @ApiOperation({ summary: 'Get all submitted pre-tests' })
