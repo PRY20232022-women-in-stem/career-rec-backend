@@ -25,16 +25,4 @@ export class CreatePostTestDto {
     @ApiProperty()
     @IsNumber()
     readonly perceptionWomenStem: number;
-
-    @ApiProperty()
-    @IsNumber()
-    readonly activitySatisfaction: number;
-
-    @ApiProperty()
-    @IsString()
-    readonly projectValue: string;
-
-    @ApiProperty()
-    @IsString()
-    readonly projectImprovement: string;
 }

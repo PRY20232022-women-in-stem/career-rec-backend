@@ -24,15 +24,6 @@ export class PostTest {
     @Column({ nullable: false })
     perceptionWomenStem: number;
 
-    @Column({ nullable: false })
-    activitySatisfaction: number;
-
-    @Column({ nullable: false })
-    projectValue: string;
-
-    @Column({ nullable: false })
-    projectImprovement: string;
-
     @OneToOne(() => Student, (student) => student.postTest)
     @JoinColumn()
     student: Student;

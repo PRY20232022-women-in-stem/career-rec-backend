@@ -33,7 +33,7 @@ export class PostTestService {
         const newPostTest = plainToClass(PostTest, createPostTestDto);
         newPostTest.student = student;
 
-        const createPostTest = await this.postTestRepository.save(createPostTestDto);
+        const createPostTest = await this.postTestRepository.save(newPostTest);
         return createPostTest;
     }
 

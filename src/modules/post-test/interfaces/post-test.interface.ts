@@ -6,7 +6,4 @@ export interface PostTest {
     futureInterestStem: number;
     learnNewInfo: number;
     perceptionWomenStem: number;
-    activitySatisfaction: number;
-    projectValue: string;
-    projectImprovement: string;
 }

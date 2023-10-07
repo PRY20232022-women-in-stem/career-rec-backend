@@ -33,7 +33,7 @@ export class PreTestService {
         const newPreTest = plainToClass(PreTest, createPreTestDto);
         newPreTest.student = student;
 
-        const createPostTest = await this.preTestRepository.save(createPreTestDto);
+        const createPostTest = await this.preTestRepository.save(newPreTest);
         return createPostTest;
     }
 

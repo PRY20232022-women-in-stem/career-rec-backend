@@ -16,23 +16,27 @@ export class VocationalTestService {
 
     async analyzeVocationalTest(studentId: number, createVocationalTestDto: CreateVocationalTestDto): Promise<any> { // Verificar que recibe para poner la resupuesta del promise
         try {
-            const response = await axios.post(`${process.env.FLASK_BACKEND_URL}/predict`, createVocationalTestDto); // CAMBIAR POR LA RUTA DEL BACKEND CON VARIABLE DE ENTORNO
-            const result = response.data;
-            this.createVocationalTest(studentId, createVocationalTestDto);
+            //const response = await axios.post(`${process.env.FLASK_BACKEND_URL}/predict`, createVocationalTestDto); // CAMBIAR POR LA RUTA DEL BACKEND CON VARIABLE DE ENTORNO
+            //const result = response.data;
+            const result = "Ingeniería" // QUITAR CUANDO FUNCIONE EL BACKEND DE ML
+            this.createVocationalTestAndSaveArea(result, studentId, createVocationalTestDto);
             return result;
         } catch (error) {
             throw new BadRequestException('External service error');
         }
     }
 
-    async createVocationalTest(studentId: number, createVocationalTestDto: CreateVocationalTestDto): Promise<void> {
+    async createVocationalTestAndSaveArea(predictedArea: string, studentId: number, createVocationalTestDto: CreateVocationalTestDto): Promise<void> {
         const student = await this.studentRepository.findOneBy({ id: studentId });
         if (!student) {
             throw new NotFoundException(`Student with Id ${studentId} not found`);
         }
-        const vocationalTest = plainToClass(VocationalTest, createVocationalTestDto);
+        const vocationalTest = plainToClass(VocationalTest, createVocationalTestDto);// Asigna la relación con el student
         vocationalTest.student = student;
 
+        student.recCareer = predictedArea; // Actualiza el area recomendada
+
         await this.vocationalTestRepository.save(vocationalTest);
+        await this.studentRepository.save(student);
     }
 }
