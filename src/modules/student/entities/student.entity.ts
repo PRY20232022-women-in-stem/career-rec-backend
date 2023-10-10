@@ -30,6 +30,9 @@ export class Student {
     @Column({ default: false })
     postTestCompl: boolean;
 
+    @Column({ default: false })
+    vocationalTestCompl: boolean;
+
     @OneToMany(() => VocationalTest, (vocationalTest) => vocationalTest.student)
     vocationalTests: VocationalTest[];
 

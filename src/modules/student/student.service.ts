@@ -81,6 +81,17 @@ export class StudentService {
         return updatedStudent;
     }
 
+    async updateStudentVocationalTest(studentId: number): Promise<StudentInterface> {
+        const student = await this.studentRepository.findOneBy({ id: studentId });
+        if (!student) {
+            throw new NotFoundException(`Student with Id ${studentId} not found`);
+        }
+        student.vocationalTestCompl = true;
+
+        const updatedStudent = await this.studentRepository.save(student);
+        return updatedStudent;
+    }
+
     async resetPasswordRequest(email: string): Promise<void> {
         // Logica para el reinicio de contrasenia con JWT 
     }

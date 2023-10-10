@@ -65,6 +65,14 @@ export class StudentController {
         return this.studentService.updateStudentPostTest(studentId);
     }
 
+    @ApiOperation({ summary: 'Update student vocational-test completition status' })
+    @ApiResponse({ status: 200, description: 'Student vocational-test completition status updated successfully', type: StudentDto })
+    @ApiResponse({ status: 400, description: 'Student vocational-test completition status failed' })
+    @Patch(':studentId/vocational-test')
+    async updateStudentVocationalTest(@Param('studentId') studentId: number): Promise<StudentInterface> {
+        return this.studentService.updateStudentVocationalTest(studentId);
+    }
+
     // CONSIDERAR SU ELIMINACION, NO SE USA EN EL PROYECTO POR AHORA
     @ApiOperation({ summary: 'Delete Student by Id' })
     @ApiResponse({ status: 200, description: 'Student deleted successfully' })

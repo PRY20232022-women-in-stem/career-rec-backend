@@ -7,4 +7,5 @@ export interface Student {
   recCareer: string;
   preTestCompl: boolean;
   postTestCompl: boolean;
+  vocationalTestCompl: boolean;
 }

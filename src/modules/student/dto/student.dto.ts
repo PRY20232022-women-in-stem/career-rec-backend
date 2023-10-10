@@ -28,4 +28,8 @@ export class StudentDto {
     @ApiProperty()
     @IsBoolean()
     readonly postTestCompl: boolean;
+
+    @ApiProperty()
+    @IsBoolean()
+    readonly vocationalTestCompl: boolean;
 }
