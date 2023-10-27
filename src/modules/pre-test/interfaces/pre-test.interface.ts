@@ -2,9 +2,9 @@ export interface PreTest {
     id: number;
     freeTimeActivities: boolean;
     subjectInterestMath: number;
-    subjectInterestBioGeo: number;
-    subjectInterestPhyChe: number;
+    subjectInterestSci: number;
+    subjectInterestTech: number;
     selfPerceptionMath: number;
-    selfPerceptionBioGeo: number;
-    selfPerceptionPhyChe: number;
+    selfPerceptionSci: number;
+    selfPerceptionTech: number;
 }
