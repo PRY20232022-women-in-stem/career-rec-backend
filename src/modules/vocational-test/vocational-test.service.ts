@@ -17,7 +17,7 @@ export class VocationalTestService {
     async analyzeVocationalTest(studentId: number, createVocationalTestDto: CreateVocationalTestDto): Promise<any> { // Verificar que recibe para poner la resupuesta del promise
         try {
             const response = await axios.post(`${process.env.FLASK_BACKEND_URL}/predict`, createVocationalTestDto);
-            const result = response.data;
+            const result = response.data.result;
             this.createVocationalTestAndSaveArea(result, studentId, createVocationalTestDto);
             return result;
         } catch (error) {
