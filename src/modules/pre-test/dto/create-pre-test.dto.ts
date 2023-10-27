@@ -29,16 +29,4 @@ export class CreatePreTestDto {
     @ApiProperty()
     @IsNumber()
     readonly selfPerceptionPhyChe: number;
-
-    @ApiProperty()
-    @IsString()
-    readonly lastGradeMath: string;
-
-    @ApiProperty()
-    @IsString()
-    readonly lastGradeBioGeo: string;
-
-    @ApiProperty()
-    @IsString()
-    readonly lastGradePhyChe: string;
 }

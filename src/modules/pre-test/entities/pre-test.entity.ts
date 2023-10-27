@@ -27,15 +27,6 @@ export class PreTest {
     @Column({ nullable: false })
     selfPerceptionPhyChe: number;
 
-    @Column({ nullable: false })
-    lastGradeMath: string;
-
-    @Column({ nullable: false })
-    lastGradeBioGeo: string;
-
-    @Column({ nullable: false })
-    lastGradePhyChe: string;
-
     @OneToOne(() => Student, (student) => student.preTest)
     @JoinColumn()
     student: Student;

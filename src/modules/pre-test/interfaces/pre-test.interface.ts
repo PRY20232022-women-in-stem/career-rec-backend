@@ -7,7 +7,4 @@ export interface PreTest {
     selfPerceptionMath: number;
     selfPerceptionBioGeo: number;
     selfPerceptionPhyChe: number;
-    lastGradeMath: string;
-    lastGradeBioGeo: string;
-    lastGradePhyChe: string;
 }
