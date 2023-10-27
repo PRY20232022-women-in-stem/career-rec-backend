@@ -15,7 +15,7 @@ export class PostTestService {
     ) { }
 
     async createPostTest(studentId: number, createPostTestDto: CreatePostTestDto): Promise<PostTestInterface> {
-        // QUITAR SI ES QUE SE PUEDE ENVIAR VARIAS VECES
+        // QUITAR SI ES QUE SE PUEDE ENVIAR VARIAS VECES  // QUITAR ESTO PARA ENVIAR MUCHAS VECES EL POST TEST
         const postTest = await this.postTestRepository.findOne({
             where: { student: { id: studentId } },
             relations: ["student"]

@@ -16,9 +16,8 @@ export class VocationalTestService {
 
     async analyzeVocationalTest(studentId: number, createVocationalTestDto: CreateVocationalTestDto): Promise<any> { // Verificar que recibe para poner la resupuesta del promise
         try {
-            //const response = await axios.post(`${process.env.FLASK_BACKEND_URL}/predict`, createVocationalTestDto); // CAMBIAR POR LA RUTA DEL BACKEND CON VARIABLE DE ENTORNO
-            //const result = response.data;
-            const result = "Ingeniería" // QUITAR CUANDO FUNCIONE EL BACKEND DE ML
+            const response = await axios.post(`${process.env.FLASK_BACKEND_URL}/predict`, createVocationalTestDto);
+            const result = response.data;
             this.createVocationalTestAndSaveArea(result, studentId, createVocationalTestDto);
             return result;
         } catch (error) {
