@@ -3,4 +3,5 @@ export interface PostTest {
     interestStemFields: number;
     futureInterestStem: number;
     perceptionWomenStem: number;
+    isSecond: string;
 }

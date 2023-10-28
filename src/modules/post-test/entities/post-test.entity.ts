@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { Student } from '../../student/entities/student.entity';
 
 @Entity('post_test')
@@ -15,7 +15,9 @@ export class PostTest {
     @Column({ nullable: false })
     perceptionWomenStem: number;
 
-    @OneToOne(() => Student, (student) => student.postTest)
-    @JoinColumn()
+    @Column({ default: "" })
+    isSecond: string;
+
+    @ManyToOne(() => Student, (student) => student.postTests)
     student: Student;
 }

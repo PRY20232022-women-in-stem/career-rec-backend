@@ -15,19 +15,29 @@ export class PostTestService {
     ) { }
 
     async createPostTest(studentId: number, createPostTestDto: CreatePostTestDto): Promise<PostTestInterface> {
-        // QUITAR SI ES QUE SE PUEDE ENVIAR VARIAS VECES  // QUITAR ESTO PARA ENVIAR MUCHAS VECES EL POST TEST
-        const postTest = await this.postTestRepository.findOne({
-            where: { student: { id: studentId } },
-            relations: ["student"]
-        });
-        if (postTest) {
-            throw new BadRequestException(`Post-test already submitted by user`);
-        }
-        // QUITAR SI ES QUE SE PUEDE ENVIAR VARIAS VECES
-
         const student = await this.studentRepository.findOneBy({ id: studentId });
         if (!student) {
             throw new NotFoundException(`Student with ID ${studentId} not found`);
+        }
+
+        // VERIFICAR SI YA HAY UN REGISTRO EXISTENTE
+        const postTest = await this.postTestRepository.findOne({
+            where: { student: { id: studentId }, isSecond: "yes" },
+            relations: ["student"]
+        });
+        if (postTest) {
+            if (postTest.isSecond === 'yes') {
+                // Si ya ha completado un segundo registro, no se le permite enviar más.
+                throw new BadRequestException(`Second post-test already submitted by user`);
+            } else {
+                // Si es segundo, se marca como "is_second" = 'yes' y se guarda.
+                const newPostTest = plainToClass(PostTest, createPostTestDto);
+                newPostTest.isSecond = 'yes';
+                newPostTest.student = student;
+
+                const createPostTest = await this.postTestRepository.save(newPostTest);
+                return createPostTest;
+            }
         }
 
         const newPostTest = plainToClass(PostTest, createPostTestDto);

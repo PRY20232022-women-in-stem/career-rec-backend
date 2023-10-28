@@ -42,8 +42,8 @@ export class Student {
     @OneToOne(() => PreTest, (preTest) => preTest.student)
     preTest: PreTest;
 
-    @OneToOne(() => PostTest, (postTest) => postTest.student)
-    postTest: PostTest;
+    @OneToMany(() => PostTest, (postTest) => postTest.student)
+    postTests: PostTest[];
 
     @OneToOne(() => MailList, (mailList) => mailList.student)
     mailList: MailList;
