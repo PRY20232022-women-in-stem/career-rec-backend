@@ -106,10 +106,10 @@ export class PreTestService {
     private notifyClients(G1: number[], G2: number[]) {
         // Envía notificaciones a los clientes con los IDs de los estudiantes en G1 y G2
         for (const studentId of G1) {
-            this.notifyClient(studentId.toString(), "Perteneces al G1");
+            this.notifyClient(studentId.toString(), "G1");
         }
         for (const studentId of G2) {
-            this.notifyClient(studentId.toString(), "Perteneces al G2");
+            this.notifyClient(studentId.toString(), "G2");
         }
     }
 
