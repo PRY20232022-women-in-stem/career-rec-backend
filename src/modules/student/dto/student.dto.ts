@@ -22,6 +22,10 @@ export class StudentDto {
     readonly recCareer: string;
 
     @ApiProperty()
+    @IsString()
+    readonly group: string;
+
+    @ApiProperty()
     @IsBoolean()
     readonly preTestCompl: boolean;
 

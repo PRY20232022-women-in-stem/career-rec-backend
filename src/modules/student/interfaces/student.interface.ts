@@ -5,6 +5,7 @@ export interface Student {
   firstName: string;
   lastName: string;
   recCareer: string;
+  group: string;
   preTestCompl: boolean;
   postTestCompl: boolean;
   vocationalTestCompl: boolean;
