@@ -24,6 +24,9 @@ export class Student {
     @Column({ default: "" })
     recCareer: string;
 
+    @Column({ default: "" })
+    group: string;
+
     @Column({ default: false })
     preTestCompl: boolean;
 

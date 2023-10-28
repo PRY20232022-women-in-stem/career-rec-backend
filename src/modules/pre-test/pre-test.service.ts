@@ -6,15 +6,121 @@ import { PreTest } from './entities/pre-test.entity';
 import { PreTest as PreTestInterface } from './interfaces/pre-test.interface';
 import { CreatePreTestDto } from './dto/create-pre-test.dto';
 import { Student } from '../student/entities/student.entity';
+import { PreTestGateway } from './pre-test.gateway';
 
 @Injectable()
 export class PreTestService {
     constructor(
         @InjectRepository(PreTest) private preTestRepository: Repository<PreTest>,
-        @InjectRepository(Student) private studentRepository: Repository<Student>
+        @InjectRepository(Student) private studentRepository: Repository<Student>,
+        private readonly preTestGateway: PreTestGateway
     ) { }
 
+    //private timeRemaining = 180000; // 3 minutos en milisegundos    
+    private timeRemaining = 10000; // 3 minutos en milisegundos
+    private studentAnswers: { [studentId: number]: number } = {}; // Usamos un objeto para rastrear el ID del estudiante y su grupo
+    private timerStarted = false;
+
+    startTimer() {
+        setTimeout(() => {
+            console.log("Inició la cuenta atrás para completar el pre-test")
+            this.classifyAndDivideStudentsAfterTimer();
+        }, this.timeRemaining);
+    }
+
+    addStudentAnswers(studentId: number, answers: CreatePreTestDto) {
+        const classification = this.calculateStudentClassification(answers);
+        this.studentAnswers[studentId] = classification; // Almacenamos la clasificación por intervalo para el estudiante
+    }
+
+    async classifyAndDivideStudentsAfterTimer() {
+        // Obtener una lista de intervalos (1-4)
+        const intervals = [1, 2, 3, 4];
+
+        for (const interval of intervals) {
+            const intervalStudents = this.getStudentsInInterval(interval); // Obtener estudiantes dentro del intervalo
+            const { G1, G2 } = this.divideStudentsEqually(intervalStudents); // Dividir estudiantes en G1 y G2
+
+            // Almacenar la división en la base de datos para el intervalo actual
+            await this.storeDivisionInDatabase(G1, G2, interval);
+
+            // Enviar notificaciones en tiempo real a los clientes
+            this.notifyClients(G1, G2);
+        }
+    }
+
+    getStudentsInInterval(interval: number): number[] {
+        // Filtrar estudiantes en función de su clasificación por intervalo
+        return Object.entries(this.studentAnswers)
+            .filter(([_, classification]) => classification === interval)
+            .map(([studentId, _]) => Number(studentId));
+    }
+
+    calculateStudentClassification(answers: CreatePreTestDto): number {
+        // Calcula el promedio de las respuestas del estudiante
+        const average = (answers.subjectInterestMath + answers.subjectInterestSci + answers.subjectInterestTech +
+            answers.selfPerceptionMath + answers.selfPerceptionSci + answers.selfPerceptionTech) / 6;
+
+        // Clasifica al estudiante en uno de los 4 intervalos
+        if (average >= 1 && average < 2.5) {
+            return 1;
+        } else if (average >= 2.5 && average < 3.5) {
+            return 2;
+        } else if (average >= 3.5 && average < 4.5) {
+            return 3;
+        } else {
+            return 4;
+        }
+    }
+
+    async storeDivisionInDatabase(G1: number[], G2: number[], interval: number) {
+        for (const studentId of G1) {
+            const student = await this.studentRepository.findOneBy({ id: studentId });
+            if (student) {
+                student.group = 'G1';
+                await this.studentRepository.save(student);
+            }
+        }
+
+        for (const studentId of G2) {
+            const student = await this.studentRepository.findOneBy({ id: studentId });
+            if (student) {
+                student.group = 'G2';
+                await this.studentRepository.save(student);
+            }
+        }
+    }
+
+    divideStudentsEqually(students: number[]): { G1: number[], G2: number[] } {
+        // Implementa la lógica de división equitativa aquí y devuelve los grupos G1 y G2
+        const groupSize = Math.ceil(students.length / 2);
+        const G1 = students.slice(0, groupSize);
+        const G2 = students.slice(groupSize);
+        return { G1, G2 };
+    }
+
+    notifyClient(userId: string, message: string) {
+        this.preTestGateway.notifyClient(userId, message);
+    }
+
+    private notifyClients(G1: number[], G2: number[]) {
+        // Envía notificaciones a los clientes con los IDs de los estudiantes en G1 y G2
+        for (const studentId of G1) {
+            this.notifyClient(studentId.toString(), "Perteneces al G1");
+        }
+        for (const studentId of G2) {
+            this.notifyClient(studentId.toString(), "Perteneces al G2");
+        }
+    }
+
     async createPreTest(studentId: number, createPreTestDto: CreatePreTestDto): Promise<PreTestInterface> {
+
+        if (!this.timerStarted) {
+            // Iniciar el temporizador solo la primera vez que se envía un pre-test
+            this.startTimer();
+            this.timerStarted = true;
+        }
+
         // QUITAR SI ES QUE SE PUEDE ENVIAR VARIAS VECES
         const preTest = await this.preTestRepository.findOne({
             where: { student: { id: studentId } },
