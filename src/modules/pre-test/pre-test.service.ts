@@ -16,7 +16,7 @@ export class PreTestService {
         private readonly preTestGateway: PreTestGateway
     ) { }
 
-    private timeRemaining = 240000; // 5 minutos en milisegundos    
+    private timeRemaining = 240000; // 4 minutos en milisegundos    
     private studentAnswers: { [studentId: number]: number } = {}; // Usamos un objeto para rastrear el ID del estudiante y su grupo
     private timerStarted = false;
 
@@ -30,6 +30,23 @@ export class PreTestService {
     addStudentAnswers(studentId: number, answers: CreatePreTestDto) {
         const classification = this.calculateStudentClassification(answers);
         this.studentAnswers[studentId] = classification; // Almacenamos la clasificación por intervalo para el estudiante
+    }
+
+    calculateStudentClassification(answers: CreatePreTestDto): number {
+        // Calcula el promedio de las respuestas del estudiante
+        const average = (answers.subjectInterestMath + answers.subjectInterestSci + answers.subjectInterestTech +
+            answers.selfPerceptionMath + answers.selfPerceptionSci + answers.selfPerceptionTech) / 6;
+
+        // Clasifica al estudiante en uno de los 4 intervalos
+        if (average >= 1 && average < 2.5) {
+            return 1;
+        } else if (average >= 2.5 && average < 3.5) {
+            return 2;
+        } else if (average >= 3.5 && average < 4.5) {
+            return 3;
+        } else {
+            return 4;
+        }
     }
 
     async classifyAndDivideStudentsAfterTimer() {
@@ -55,21 +72,28 @@ export class PreTestService {
             .map(([studentId, _]) => Number(studentId));
     }
 
-    calculateStudentClassification(answers: CreatePreTestDto): number {
-        // Calcula el promedio de las respuestas del estudiante
-        const average = (answers.subjectInterestMath + answers.subjectInterestSci + answers.subjectInterestTech +
-            answers.selfPerceptionMath + answers.selfPerceptionSci + answers.selfPerceptionTech) / 6;
+    divideStudentsEqually(students: number[]): { G1: number[], G2: number[] } {
+        // Implementa la lógica de división equitativa aquí y devuelve los grupos G1 y G2
+        const groupSize = Math.ceil(students.length / 2);
+        const G1 = students.slice(0, groupSize);
+        const G2 = students.slice(groupSize);
 
-        // Clasifica al estudiante en uno de los 4 intervalos
-        if (average >= 1 && average < 2.5) {
-            return 1;
-        } else if (average >= 2.5 && average < 3.5) {
-            return 2;
-        } else if (average >= 3.5 && average < 4.5) {
-            return 3;
-        } else {
-            return 4;
+        // Verifica si la diferencia entre el tamaño de G1 y G2 es mayor que 1
+        if (Math.abs(G1.length - G2.length) > 1) {
+            // La diferencia es mayor que 1, necesitamos equilibrar los grupos
+            while (Math.abs(G1.length - G2.length) > 1) {
+                if (G1.length > G2.length) {
+                    // Transfiere un estudiante de G1 a G2
+                    const studentToMove = G1.pop();
+                    G2.unshift(studentToMove);
+                } else {
+                    // Transfiere un estudiante de G2 a G1
+                    const studentToMove = G2.pop();
+                    G1.unshift(studentToMove);
+                }
+            }
         }
+        return { G1, G2 };
     }
 
     async storeDivisionInDatabase(G1: number[], G2: number[], interval: number) {
@@ -88,14 +112,6 @@ export class PreTestService {
                 await this.studentRepository.save(student);
             }
         }
-    }
-
-    divideStudentsEqually(students: number[]): { G1: number[], G2: number[] } {
-        // Implementa la lógica de división equitativa aquí y devuelve los grupos G1 y G2
-        const groupSize = Math.ceil(students.length / 2);
-        const G1 = students.slice(0, groupSize);
-        const G2 = students.slice(groupSize);
-        return { G1, G2 };
     }
 
     notifyClient(userId: string, message: string) {
