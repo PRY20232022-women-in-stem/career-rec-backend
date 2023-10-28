@@ -13,28 +13,19 @@ export class PreTest {
     subjectInterestMath: number;
 
     @Column({ nullable: false })
-    subjectInterestBioGeo: number;
+    subjectInterestSci: number;
 
     @Column({ nullable: false })
-    subjectInterestPhyChe: number;
+    subjectInterestTech: number;
 
     @Column({ nullable: false })
     selfPerceptionMath: number;
 
     @Column({ nullable: false })
-    selfPerceptionBioGeo: number;
+    selfPerceptionSci: number;
 
     @Column({ nullable: false })
-    selfPerceptionPhyChe: number;
-
-    @Column({ nullable: false })
-    lastGradeMath: string;
-
-    @Column({ nullable: false })
-    lastGradeBioGeo: string;
-
-    @Column({ nullable: false })
-    lastGradePhyChe: string;
+    selfPerceptionTech: number;
 
     @OneToOne(() => Student, (student) => student.preTest)
     @JoinColumn()

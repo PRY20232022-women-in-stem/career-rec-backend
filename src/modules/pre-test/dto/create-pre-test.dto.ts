@@ -12,11 +12,11 @@ export class CreatePreTestDto {
 
     @ApiProperty()
     @IsNumber()
-    readonly subjectInterestBioGeo: number;
+    readonly subjectInterestSci: number;
 
     @ApiProperty()
     @IsNumber()
-    readonly subjectInterestPhyChe: number;
+    readonly subjectInterestTech: number;
 
     @ApiProperty()
     @IsNumber()
@@ -24,21 +24,9 @@ export class CreatePreTestDto {
 
     @ApiProperty()
     @IsNumber()
-    readonly selfPerceptionBioGeo: number;
+    readonly selfPerceptionSci: number;
 
     @ApiProperty()
     @IsNumber()
-    readonly selfPerceptionPhyChe: number;
-
-    @ApiProperty()
-    @IsString()
-    readonly lastGradeMath: string;
-
-    @ApiProperty()
-    @IsString()
-    readonly lastGradeBioGeo: string;
-
-    @ApiProperty()
-    @IsString()
-    readonly lastGradePhyChe: string;
+    readonly selfPerceptionTech: number;
 }

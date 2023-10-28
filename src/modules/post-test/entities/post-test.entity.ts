@@ -7,19 +7,10 @@ export class PostTest {
     id: number;
 
     @Column({ nullable: false })
-    projectParticipation: string;
-
-    @Column({ nullable: false })
-    projectTimeSpent: string;
-
-    @Column({ nullable: false })
     interestStemFields: number;
 
     @Column({ nullable: false })
     futureInterestStem: number;
-
-    @Column({ nullable: false })
-    learnNewInfo: number;
 
     @Column({ nullable: false })
     perceptionWomenStem: number;

@@ -3,24 +3,12 @@ import { IsNumber, IsString } from "class-validator";
 
 export class CreatePostTestDto {
     @ApiProperty()
-    @IsString()
-    readonly projectParticipation: string;
-
-    @ApiProperty()
-    @IsString()
-    readonly projectTimeSpent: string;
-
-    @ApiProperty()
     @IsNumber()
     readonly interestStemFields: number;
 
     @ApiProperty()
     @IsNumber()
     readonly futureInterestStem: number;
-
-    @ApiProperty()
-    @IsNumber()
-    readonly learnNewInfo: number;
 
     @ApiProperty()
     @IsNumber()
