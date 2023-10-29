@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { VocationalTest } from './entities/vocational-test.entity';
 import { Student } from '../student/entities/student.entity';
 import { CreateVocationalTestDto } from './dto/vocational-test.dto';
-import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class VocationalTestService {
@@ -30,12 +29,12 @@ export class VocationalTestService {
         if (!student) {
             throw new NotFoundException(`Student with Id ${studentId} not found`);
         }
-        const vocationalTest = plainToClass(VocationalTest, createVocationalTestDto);// Asigna la relación con el student
-        vocationalTest.student = student;
+        const vocationalTest = this.vocationalTestRepository.create(createVocationalTestDto);
+        vocationalTest.student = student; // Asigna la relación con el student
 
         student.recCareer = predictedArea; // Actualiza el area recomendada
 
-        await this.vocationalTestRepository.save(vocationalTest);
         await this.studentRepository.save(student);
+        await this.vocationalTestRepository.save(vocationalTest);
     }
 }
