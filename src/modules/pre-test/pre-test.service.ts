@@ -16,13 +16,14 @@ export class PreTestService {
         private readonly preTestGateway: PreTestGateway
     ) { }
 
-    private timeRemaining = 240000; // 4 minutos en milisegundos    
+    private timeRemaining = 240000; // 240000 4 minutos en milisegundos
     private studentAnswers: { [studentId: number]: number } = {}; // Usamos un objeto para rastrear el ID del estudiante y su grupo
     private timerStarted = false;
 
     startTimer() {
+        console.log("Inició la cuenta atrás para completar el pre-test")
         setTimeout(() => {
-            console.log("Inició la cuenta atrás para completar el pre-test")
+            console.log("Cerró la cuenta atrás del pre-test")
             this.classifyAndDivideStudentsAfterTimer();
         }, this.timeRemaining);
     }

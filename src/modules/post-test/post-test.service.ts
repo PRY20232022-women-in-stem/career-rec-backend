@@ -20,31 +20,27 @@ export class PostTestService {
             throw new NotFoundException(`Student with ID ${studentId} not found`);
         }
 
-        // VERIFICAR SI YA HAY UN REGISTRO EXISTENTE
-        const postTest = await this.postTestRepository.findOne({
-            where: { student: { id: studentId }, isSecond: "yes" },
-            relations: ["student"]
+        // Contar la cantidad de post-tests existentes para el estudiante
+        const postTestCount = await this.postTestRepository.count({
+            where: { student: { id: studentId } },
         });
-        if (postTest) {
-            if (postTest.isSecond === 'yes') {
-                // Si ya ha completado un segundo registro, no se le permite enviar más.
-                throw new BadRequestException(`Second post-test already submitted by user`);
-            } else {
-                // Si es segundo, se marca como "is_second" = 'yes' y se guarda.
-                const newPostTest = plainToClass(PostTest, createPostTestDto);
-                newPostTest.isSecond = 'yes';
-                newPostTest.student = student;
 
-                const createPostTest = await this.postTestRepository.save(newPostTest);
-                return createPostTest;
-            }
+        if (postTestCount >= 2) {
+            // Si ya ha completado dos post-tests, no se le permite enviar más.
+            throw new BadRequestException(`User has already submitted two post-tests`);
         }
 
-        const newPostTest = plainToClass(PostTest, createPostTestDto);
+        const newPostTest = this.postTestRepository.create(createPostTestDto);
         newPostTest.student = student;
 
-        const createPostTest = await this.postTestRepository.save(newPostTest);
-        return createPostTest;
+        if (postTestCount === 0) {
+            const createPostTest = await this.postTestRepository.save(newPostTest);
+            return createPostTest;
+        } else if (postTestCount === 1) {
+            newPostTest.isSecond = 'yes';
+            const createPostTest = await this.postTestRepository.save(newPostTest);
+            return createPostTest;
+        }
     }
 
     async findAllPostTest(): Promise<PostTestInterface[]> {

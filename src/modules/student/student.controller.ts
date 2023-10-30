@@ -73,6 +73,14 @@ export class StudentController {
         return this.studentService.updateStudentVocationalTest(studentId);
     }
 
+    @ApiOperation({ summary: 'Update student recommended area' })
+    @ApiResponse({ status: 200, description: 'Student recommended area updated successfully', type: StudentDto })
+    @ApiResponse({ status: 400, description: 'Student recommended area updated failed' })
+    @Patch(':studentId/recommend-area/:recArea')
+    async updateStudentRecCareer(@Param('studentId') studentId: number, @Param('recArea') recArea: string): Promise<StudentInterface> {
+        return this.studentService.updateRecCareer(studentId, recArea);
+    }
+
     // CONSIDERAR SU ELIMINACION, NO SE USA EN EL PROYECTO POR AHORA
     @ApiOperation({ summary: 'Delete Student by Id' })
     @ApiResponse({ status: 200, description: 'Student deleted successfully' })

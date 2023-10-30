@@ -92,6 +92,19 @@ export class StudentService {
         return updatedStudent;
     }
 
+    // CONSIDERAR SU ELIMINACION, SOLO ES PARA ASEGURARSE QUE FUNCIONA
+    async updateRecCareer(studentId: number, recArea: string): Promise<StudentInterface> {
+
+        const student = await this.studentRepository.findOneBy({ id: studentId });
+        if (!student) {
+            throw new NotFoundException(`Student with ID ${studentId} not found`);
+        }
+        student.recCareer = recArea;
+
+        const updatedStudent = await this.studentRepository.save(student);
+        return updatedStudent;
+    }
+
     async resetPasswordRequest(email: string): Promise<void> {
         // Logica para el reinicio de contrasenia con JWT 
     }
