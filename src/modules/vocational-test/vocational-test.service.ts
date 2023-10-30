@@ -29,10 +29,12 @@ export class VocationalTestService {
         if (!student) {
             throw new NotFoundException(`Student with Id ${studentId} not found`);
         }
-        const vocationalTest = this.vocationalTestRepository.create(createVocationalTestDto);
-        vocationalTest.student = student; // Asigna la relación con el student
+        // Actualiza la propiedad recCareer
+        student.recCareer = predictedArea;
 
-        student.recCareer = predictedArea; // Actualiza el area recomendada
+        // Crea y asigna el objeto de vocationalTest
+        const vocationalTest = this.vocationalTestRepository.create(createVocationalTestDto);
+        vocationalTest.student = student;
 
         await this.studentRepository.save(student);
         await this.vocationalTestRepository.save(vocationalTest);
