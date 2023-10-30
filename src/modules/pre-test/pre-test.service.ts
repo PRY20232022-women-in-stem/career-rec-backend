@@ -16,7 +16,7 @@ export class PreTestService {
         private readonly preTestGateway: PreTestGateway
     ) { }
 
-    private timeRemaining = 10000; // 240000 4 minutos en milisegundos
+    private timeRemaining = 240000; // 240000 4 minutos en milisegundos
     private studentAnswers: { [studentId: number]: number } = {}; // Usamos un objeto para rastrear el ID del estudiante y su grupo
     private timerStarted = false;
 
